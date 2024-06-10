@@ -1,0 +1,46 @@
+server:
+  port: 8080
+
+
+
+spring:
+  application:
+    name: server-sent-events
+
+
+  events:
+    connection:
+      timeout: 180000
+
+  server:
+    servlet:
+      context-path: /notification
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+    jpa:
+      hibernate:
+        ddl-auto: create
+  profiles:
+    include:
+      - cors
+
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      max-file-size: 20MB
+
+  mvc:
+    log-request-details: true
+
+---
+
+
+domain:
+  host: 'localhost'
+
+

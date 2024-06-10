@@ -1,0 +1,60 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE Test</title>
+    <style>
+        .event {
+            border: 1px solid #ccc;
+            margin: 5px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>Server-Sent Events Test</h1>
+<div id="events"></div>
+
+<script>
+    const url = 'http://localhost:8080/events';
+
+    // SSE 연결 설정
+    const eventSource = new EventSource(`${url}?MemberId=1`);
+    console.log('SSE connection opened');
+
+    // 이벤트 수신 처리
+    eventSource.onmessage = function(event) {
+        console.log('Received event data:', event.data);
+        displayEventData(event.data);
+    };
+
+    eventSource.addEventListener('exampleType', function(event) {
+        console.log('Received exampleType event data:', event.data);
+        displayEventData(event.data);
+    });
+
+    // 오류 처리
+    eventSource.onerror = function(error) {
+        console.error('EventSource failed:', error);
+    };
+
+    // 이벤트 데이터를 화면에 표시하는 함수
+    function displayEventData(data) {
+        const eventsDiv = document.getElementById('events');
+        const eventData = JSON.parse(data);
+
+        const eventDiv = document.createElement('div');
+        eventDiv.className = 'event';
+        eventDiv.innerHTML = `
+        <p><strong>Key1:</strong> ${eventData.key1}</p>
+        <p><strong>Key2:</strong> ${eventData.key2}</p>
+    `;
+        eventsDiv.appendChild(eventDiv);
+    }
+</script>
+</body>
+</html>
